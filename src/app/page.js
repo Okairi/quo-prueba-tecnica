@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createLink, getBanks } from "./services/bankService";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 
@@ -13,14 +14,9 @@ const getBaknsList = async () => {
 
 function HomePage() {
   const [data, setdata] = useState([]);
+  const router = useRouter();
 
   const redirectDetailsCreateLink = async (name, display_name) => {
-    /*     const objLink = {
-      institution: name,
-      username: "bnk100",
-      password: "full",
-      code: 1,
-    }; */
     console.log("name", name);
     const objLink = {
       institution: name,
@@ -30,6 +26,13 @@ function HomePage() {
 
     const create = await createLink(objLink);
     console.log(create);
+
+    const result = {
+      id: create.data.id,
+      display_name,
+    };
+
+    router.push(`/transactions?id=${create.data.id}&name=${display_name}`);
   };
 
   useEffect(() => {
@@ -43,7 +46,7 @@ function HomePage() {
 
   return (
     <section>
-      <h1 className="text-white">HomePage</h1>
+      <h1 className="text-white ml-4 text-[28px] text-center mb-10"></h1>
 
       {data.map((val) => {
         return (
