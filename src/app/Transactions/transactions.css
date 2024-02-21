@@ -1,0 +1,32 @@
+.tabla {
+    display: grid;
+    background-color: rgb(237, 217, 217);
+    box-shadow: 0px 10px 15px -3px rgba(238, 224, 224, 0.1);
+    width: 97%;
+    margin: 0 auto;
+}
+
+.fila-header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.fila {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 15px;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.celda {
+    padding: 10px;
+    text-align: center;
+}
+
+.loadin-icon {
+    width: 80px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
