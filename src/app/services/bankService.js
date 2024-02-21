@@ -12,3 +12,11 @@ export const transactionList = (id) => {
     `${process.env.NEXT_PUBLIC_BASE_URL}/transactions/?page=1&link=${id}`
   );
 };
+
+export const login = (user) => {
+  return axios.post(`${process.env.NEXT_PUBLIC_DEV_AUTH}/login`, user);
+};
+
+export const register = () => {
+  return axios.post(`${process.env.NEXT_PUBLIC_DEV_AUTH}/register`, user);
+};
