@@ -17,11 +17,15 @@ function HomePage() {
   const router = useRouter();
 
   const redirectDetailsCreateLink = async (name, display_name) => {
-    console.log("name", name);
     const objLink = {
       institution: name,
       username: "bnk100",
       password: "full",
+      external_id: "security-testing",
+      access_mode: "single",
+      credentials_storage: "5d",
+      stale_in: "30d",
+      fetch_resources: ["ACCOUNTS", "OWNERS", "TRANSACTIONS"],
     };
 
     const create = await createLink(objLink);
@@ -57,7 +61,7 @@ function HomePage() {
                 redirectDetailsCreateLink(val.name, val.display_name);
               }}
             >
-              <span> {val.display_name}</span>
+              <span className="text-[20px]"> {val.display_name}</span>
               <Image
                 className="logo"
                 src={val.logo || ""}

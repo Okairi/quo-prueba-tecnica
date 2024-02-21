@@ -11,6 +11,7 @@ function TransactionsPage() {
   const [data, setdata] = useState([]);
 
   useEffect(() => {
+    ("se crea otra vez");
     const fetchData = async () => {
       const transactionListRespuesta = await transactionList(id);
       setdata(transactionListRespuesta.data.results);
@@ -18,6 +19,7 @@ function TransactionsPage() {
 
     fetchData();
   }, []);
+
   console.log(data);
   return (
     <section>
