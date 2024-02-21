@@ -1,27 +1,18 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import "./AuthPage.css";
 import Link from "next/link";
 import { login, register } from "../services/bankService";
 import { useRouter } from "next/navigation";
 
 function AuthPage({ isLogin }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [loading, setLoading] = useState(false);
-
+  const {
+    register: formRegister,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm();
   const router = useRouter();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const onSubmit = async (formData) => {
     try {
       if (isLogin) {
         const respLogin = await login(formData);
@@ -33,10 +24,7 @@ function AuthPage({ isLogin }) {
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
-    console.log("Datos del formulario:", formData);
   };
 
   return (
@@ -45,36 +33,45 @@ function AuthPage({ isLogin }) {
         {isLogin ? "Iniciar sesión" : "Registrarse"}
       </h2>
 
-      <form className="login-form form" onSubmit={handleSubmit}>
+      <form className="login-form form" onSubmit={handleSubmit(onSubmit)}>
         {!isLogin && (
           <input
             type="text"
             className="input"
             placeholder="Nombre"
-            value={formData.name}
-            onChange={handleInputChange}
-            name="name"
+            {...formRegister("name", { required: "El nombre es requerido" })}
           />
         )}
+        {errors.name && <p className="error-message">{errors.name.message}</p>}
         <input
           type="text"
           className="input"
           placeholder="Ingrese su correo"
-          value={formData.email}
-          onChange={handleInputChange}
-          name="email"
+          {...formRegister("email", {
+            required: "El correo es requerido",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Ingrese un correo electrónico válido",
+            },
+          })}
         />
+        {errors.email && (
+          <p className="error-message">{errors.email.message}</p>
+        )}
         <input
           type="password"
           className="input"
-          name="password"
           placeholder="Ingrese su contraseña"
-          value={formData.password}
-          onChange={handleInputChange}
+          {...formRegister("password", {
+            required: "La contraseña es requerida",
+          })}
         />
+        {errors.password && (
+          <p className="error-message">{errors.password.message}</p>
+        )}
 
-        <button type="submit" className="button" disabled={loading}>
-          {loading ? "Cargando..." : isLogin ? "Ingresar" : "Registrarse"}
+        <button type="submit" className="button" disabled={isSubmitting}>
+          {isSubmitting ? "Cargando..." : isLogin ? "Ingresar" : "Registrarse"}
         </button>
 
         <span className="redirect text-[13px]">
