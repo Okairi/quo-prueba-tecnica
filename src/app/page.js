@@ -5,6 +5,7 @@ import { createLink, getBanks } from "./services/bankService";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
+import { SpinerLoading } from "./components/SpinerLoading";
 
 const getBaknsList = async () => {
   const data = await getBanks();
@@ -15,6 +16,7 @@ const getBaknsList = async () => {
 function HomePage() {
   const [data, setdata] = useState([]);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const redirectDetailsCreateLink = async (name, display_name) => {
     const objLink = {
@@ -43,6 +45,7 @@ function HomePage() {
     const fetchData = async () => {
       const banksList = await getBaknsList();
       setdata(banksList);
+      setIsLoading(false);
     };
 
     fetchData();
@@ -50,35 +53,37 @@ function HomePage() {
 
   useLayoutEffect(() => {
     if (!sessionStorage.getItem("idToken")) {
-      router.push("/login");
+      router("/login");
     }
   }, []);
 
   return (
     <section>
-      <h1 className="text-white ml-4 text-[28px] text-center mb-10"></h1>
-
-      {data.map((val) => {
-        return (
-          <article className="container text-white" key={val.id}>
-            <article
-              className="bank"
-              onClick={() => {
-                redirectDetailsCrea123123teLink(val.name, val.display_name);
-              }}
-            >
-              <span className="text-[20px]"> {val.display_name}</span>
-              <Image
-                className="logo"
-                src={val.logo || ""}
-                width={200}
-                height={92}
-                alt=""
-              />
+      {isLoading ? (
+        <SpinerLoading></SpinerLoading>
+      ) : (
+        data.map((val) => {
+          return (
+            <article className="container text-white mb-4" key={val.id}>
+              <article
+                className="bank mb-[20px]"
+                onClick={() => {
+                  redirectDetailsCreateLink(val.name, val.display_name);
+                }}
+              >
+                <span className="text-[20px]"> {val.display_name}</span>
+                <Image
+                  className="logo"
+                  src={val.logo || ""}
+                  width={200}
+                  height={92}
+                  alt=""
+                />
+              </article>
             </article>
-          </article>
-        );
-      })}
+          );
+        })
+      )}
     </section>
   );
 }
