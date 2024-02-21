@@ -1,5 +1,4 @@
 import React from "react";
-
 import Link from "next/link";
 
 export const NavBar = () => {
@@ -8,9 +7,7 @@ export const NavBar = () => {
       <Link href={"/"} className="text-white text-[20px]">
         Inicio
       </Link>
-      <Link href={""} className="text-white">
-        User
-      </Link>
+      <a className="text-white cursor-pointer">Cerrar Sesión</a>
     </nav>
   );
 };
