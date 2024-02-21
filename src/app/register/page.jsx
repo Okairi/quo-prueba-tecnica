@@ -20,7 +20,7 @@ function RegisterPage() {
 
         <span className="redirect text-[13px]">
           ¿Ya tienes una cuenta?
-          <Link className="text-[blue]" href={"/register"}>
+          <Link className="text-[blue]" href={"/login"}>
             Iniciar Sesión
           </Link>
         </span>
