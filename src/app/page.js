@@ -19,6 +19,7 @@ function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const redirectDetailsCreateLink = async (name, display_name) => {
+    setIsLoading(true);
     const objLink = {
       institution: name,
       username: "bnk100",
@@ -53,7 +54,7 @@ function HomePage() {
 
   useLayoutEffect(() => {
     if (!sessionStorage.getItem("idToken")) {
-      router("/login");
+      router.push("/login");
     }
   }, []);
 
