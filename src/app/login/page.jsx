@@ -3,19 +3,25 @@ import { useState } from "react";
 import "./login.css";
 import Link from "next/link";
 import { login } from "../services/bankService";
+import { useRouter } from "next/navigation";
 
 function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
 
+  const router = useRouter();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const respLogin = await login(formData);
-
-    sessionStorage.setItem("idToken", respLogin.data.token);
+    try {
+      const respLogin = await login(formData);
+      sessionStorage.setItem("idToken", respLogin.data.token);
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log("Datos del formulario:", formData);
   };

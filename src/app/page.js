@@ -50,7 +50,7 @@ function HomePage() {
 
   useLayoutEffect(() => {
     if (!sessionStorage.getItem("idToken")) {
-      redirect("/login");
+      router.push("/login");
     }
   }, []);
 

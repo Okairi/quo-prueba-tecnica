@@ -1,13 +1,14 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { transactionList } from "../services/bankService";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import "./transactions.css";
+
 function TransactionsPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const name = searchParams.get("name");
-
+  const router = useRouter();
   const [data, setdata] = useState([]);
 
   useEffect(() => {
@@ -18,6 +19,12 @@ function TransactionsPage() {
     };
 
     fetchData();
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!sessionStorage.getItem("idToken")) {
+      router.push("/login");
+    }
   }, []);
 
   console.log(data);
