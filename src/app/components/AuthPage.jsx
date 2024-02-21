@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./AuthPage.css";
 import Link from "next/link";
-import { login, register } from "../services/bankService"; // Asumiendo que tienes funciones para iniciar sesión y registrarse en tu servicio
+import { login, register } from "../services/bankService";
 import { useRouter } from "next/navigation";
 
 function AuthPage({ isLogin }) {
@@ -10,6 +10,8 @@ function AuthPage({ isLogin }) {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -19,18 +21,21 @@ function AuthPage({ isLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (isLogin) {
         const respLogin = await login(formData);
         sessionStorage.setItem("idToken", respLogin.data.token);
+        router.push("/");
       } else {
-        await register(formData);
+        const respRegister = await register(formData);
+        router.push("/login");
       }
-      router.push("/");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
-
     console.log("Datos del formulario:", formData);
   };
 
@@ -68,8 +73,8 @@ function AuthPage({ isLogin }) {
           onChange={handleInputChange}
         />
 
-        <button type="submit" className="button">
-          {isLogin ? "Ingresar" : "Registrarse"}
+        <button type="submit" className="button" disabled={loading}>
+          {loading ? "Cargando..." : isLogin ? "Ingresar" : "Registrarse"}
         </button>
 
         <span className="redirect text-[13px]">

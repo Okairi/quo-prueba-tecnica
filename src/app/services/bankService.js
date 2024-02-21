@@ -17,6 +17,6 @@ export const login = (user) => {
   return axios.post(`${process.env.NEXT_PUBLIC_DEV_AUTH}/login`, user);
 };
 
-export const register = () => {
+export const register = (user) => {
   return axios.post(`${process.env.NEXT_PUBLIC_DEV_AUTH}/register`, user);
 };
