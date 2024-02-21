@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { createLink, getBanks } from "./services/bankService";
 import { useRouter } from "next/navigation";
 
@@ -48,6 +48,12 @@ function HomePage() {
     fetchData();
   }, []);
 
+  useLayoutEffect(() => {
+    if (!sessionStorage.getItem("idToken")) {
+      redirect("/login");
+    }
+  }, []);
+
   return (
     <section>
       <h1 className="text-white ml-4 text-[28px] text-center mb-10"></h1>
@@ -58,7 +64,7 @@ function HomePage() {
             <article
               className="bank"
               onClick={() => {
-                redirectDetailsCreateLink(val.name, val.display_name);
+                redirectDetailsCrea123123teLink(val.name, val.display_name);
               }}
             >
               <span className="text-[20px]"> {val.display_name}</span>
