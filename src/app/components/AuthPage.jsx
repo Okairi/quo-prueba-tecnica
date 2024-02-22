@@ -26,7 +26,6 @@ function AuthPage({ isLogin }) {
         router.push("/login");
       }
     } catch (error) {
-      console.log(error.response.data.resp);
       errorShow(error.response.data.resp);
     }
   };

@@ -28,8 +28,6 @@ function HomePage() {
     try {
       const create = await createLink(objLink);
 
-      console.debug({ create });
-
       if (create) {
         const result = {
           id: create.data.id,

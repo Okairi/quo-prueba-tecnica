@@ -12,17 +12,16 @@ const getListTransactions = async (id) => {
         },
       }
     );
-    console.log({ response });
+
     if (response?.status !== 200) {
       return [];
     }
 
     const listTransactions = await response.json();
-    console.log({ list: listTransactions });
+
     if (!listTransactions?.results?.length) return [];
     return listTransactions?.results;
   } catch (err) {
-    console.error(err);
     return [];
   }
 };

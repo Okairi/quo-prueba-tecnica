@@ -33,16 +33,12 @@ function TransactionsClient({ listTransactions }) {
     return totalInflows - totalOutflows;
   }, [listTransactions]);
 
-  console.debug({ listTransactions });
-
   useEffect(() => {
     count++;
 
     if (listTransactions.length === 0 && count < 7) {
       router.refresh();
     }
-
-    console.debug({ count });
 
     if (count === 7) {
       Swal.fire({
