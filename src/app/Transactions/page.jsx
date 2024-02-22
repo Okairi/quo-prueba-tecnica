@@ -1,15 +1,14 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import { useEffect, useLayoutEffect, useState, Suspense } from "react";
 import { transactionList } from "../services/bankService";
-import { useEffect, useLayoutEffect, useState } from "react";
-import "./transactions.css";
 import { SpinerLoading } from "../components/SpinerLoading";
 
 function TransactionsPage() {
-  const searchParams = useSearchParams();
+  const router = useRouter();
+  const searchParams = new URLSearchParams(router.asPath.split("?")[1]);
   const id = searchParams.get("id");
   const name = searchParams.get("name");
-  const router = useRouter();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(0);
@@ -41,7 +40,7 @@ function TransactionsPage() {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   useLayoutEffect(() => {
     if (!sessionStorage.getItem("idToken")) {
@@ -50,43 +49,47 @@ function TransactionsPage() {
   }, []);
 
   return (
-    <section>
-      {loading || data.length === 0 ? (
-        <SpinerLoading />
-      ) : (
-        <>
-          <h2 className="text-[orange] font-bold text-[32px] ml-12">{name}</h2>
-          <span className="ml-12">KPI : {balance}</span>
-          <br />
-          <br />
-          <div className="tabla overflow-x-scroll max-w-[70%] ">
-            <div className="fila-header">
-              <div className="celda">
-                <b>Monto</b>
+    <Suspense fallback={<div>Loading...</div>}>
+      <section>
+        {loading || data.length === 0 ? (
+          <SpinerLoading />
+        ) : (
+          <>
+            <h2 className="text-[orange] font-bold text-[32px] ml-12">
+              {name}
+            </h2>
+            <span className="ml-12">KPI : {balance}</span>
+            <br />
+            <br />
+            <div className="tabla overflow-x-scroll max-w-[70%] ">
+              <div className="fila-header">
+                <div className="celda">
+                  <b>Monto</b>
+                </div>
+                <div className="celda">
+                  <b>Fecha</b>
+                </div>
+                <div className="celda">
+                  <b>Tipo</b>
+                </div>
+                <div className="celda">
+                  <b>Moneda</b>
+                </div>
               </div>
-              <div className="celda">
-                <b>Fecha</b>
-              </div>
-              <div className="celda">
-                <b>Tipo</b>
-              </div>
-              <div className="celda">
-                <b>Moneda</b>
-              </div>
-            </div>
 
-            {data.map((val) => (
-              <div key={val.id} className="fila">
-                <div className="celda">{val.amount}</div>
-                <div className="celda">{val.value_date}</div>
-                <div className="celda">{val.type}</div>
-                <div className="celda">{val.currency}</div>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-    </section>
+              {data.map((val) => (
+                <div key={val.id} className="fila">
+                  <div className="celda">{val.amount}</div>
+                  <div className="celda">{val.value_date}</div>
+                  <div className="celda">{val.type}</div>
+                  <div className="celda">{val.currency}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </section>
+    </Suspense>
   );
 }
 
