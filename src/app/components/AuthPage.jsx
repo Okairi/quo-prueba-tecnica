@@ -3,6 +3,7 @@ import "./AuthPage.css";
 import Link from "next/link";
 import { login, register } from "../services/bankService";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 function AuthPage({ isLogin }) {
   const {
@@ -17,12 +18,36 @@ function AuthPage({ isLogin }) {
       if (isLogin) {
         const respLogin = await login(formData);
         sessionStorage.setItem("idToken", respLogin.data.token);
+        success("Logeado Correctamente");
         router.push("/");
       } else {
         const respRegister = await register(formData);
+        success("Registrado correctamente");
         router.push("/login");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data.resp);
+      errorShow(error.response.data.resp);
+    }
+  };
+
+  const errorShow = (textShow) => {
+    Swal.fire({
+      title: "Error!",
+      text: textShow,
+      icon: "error",
+      confirmButtonText: "Cerrar",
+    });
+  };
+
+  const success = (text) => {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: text,
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 
   return (
