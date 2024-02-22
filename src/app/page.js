@@ -65,14 +65,20 @@ function HomePage() {
       ) : (
         data.map((val) => {
           return (
-            <article className="container text-white mb-4" key={val.id}>
+            <article
+              className="container-home text-white mb-4 w-[20px]"
+              key={val.id}
+            >
               <article
                 className="bank mb-[20px]"
                 onClick={() => {
                   redirectDetailsCreateLink(val.name, val.display_name);
                 }}
               >
-                <span className="text-[20px]"> {val.display_name}</span>
+                <span className="text-[12px] sm:text-[20px]">
+                  {" "}
+                  {val.display_name}
+                </span>
                 <Image
                   className="logo"
                   src={val.logo || ""}
