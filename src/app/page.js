@@ -87,13 +87,15 @@ function HomePage() {
                   {" "}
                   {val.display_name}
                 </span>
-                <Image
-                  className="logo"
-                  src={val.logo || ""}
-                  width={200}
-                  height={92}
-                  alt=""
-                />
+                {val.logo && (
+                  <Image
+                    className="logo"
+                    src={val.logo}
+                    width={200}
+                    height={92}
+                    alt=""
+                  />
+                )}
               </article>
             </article>
           );
