@@ -60,7 +60,7 @@ function TransactionsPage() {
           <span className="ml-12">KPI : {balance}</span>
           <br />
           <br />
-          <div className="tabla overflow-scroll max-w-[70%]	">
+          <div className="tabla overflow-x-scroll max-w-[70%]	">
             <div className="fila-header">
               <div className="celda">
                 <b>Monto</b>
