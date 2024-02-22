@@ -51,14 +51,15 @@ function TransactionsPage() {
 
   return (
     <section>
-      {loading && <SpinerLoading />}
-      {!loading && (
+      {loading || data.length === 0 ? (
+        <SpinerLoading />
+      ) : (
         <>
           <h2 className="text-[orange] font-bold text-[32px] ml-12">{name}</h2>
           <span className="ml-12">KPI : {balance}</span>
           <br />
           <br />
-          <div className="tabla overflow-x-scroll max-w-[70%]	">
+          <div className="tabla overflow-x-scroll max-w-[70%] ">
             <div className="fila-header">
               <div className="celda">
                 <b>Monto</b>

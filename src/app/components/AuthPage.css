@@ -9,6 +9,11 @@
     -moz-box-shadow: 3px 0px 24px -5px rgba(66, 68, 90, 1);
     box-shadow: 3px 0px 24px -5px rgba(66, 68, 90, 1);
 
+    @media (width <=450px) {
+
+        width: 90%;
+
+    }
 
 }
 
