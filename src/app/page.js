@@ -23,29 +23,31 @@ function HomePage() {
     setIsLoading(true);
     const objLink = {
       institution: name,
-      username: "bnk100",
-      password: "full",
-      external_id: "security-testing",
-      access_mode: "single",
-      credentials_storage: "5d",
-      stale_in: "30d",
-      fetch_resources: ["ACCOUNTS", "OWNERS", "TRANSACTIONS"],
+      username: myState?.username ?? "alessandro",
     };
     try {
       const create = await createLink(objLink);
 
-      const result = {
-        id: create.data.id,
-        display_name,
-      };
-      updateState(result);
-      router.push(`/transactions`);
+      console.debug({ create });
+
+      if (create) {
+        const result = {
+          id: create.data.id,
+          display_name,
+        };
+        updateState(result);
+        router.push(`/transactions/${result?.id}`);
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       Swal.fire({
         title: "Error!",
-        text: error.response.data.resp,
+        text: error,
         icon: "error",
         confirmButtonText: "Cerrar",
+      }).then((result) => {
+        location.reload();
       });
     }
   };
