@@ -5,7 +5,7 @@ import { createLink, getBanks } from "./services/bankService";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { SpinerLoading } from "./components/SpinerLoading";
-
+import Swal from "sweetalert2";
 import { useMyContext } from "../app/context/BankContext";
 
 const getBaknsList = async () => {
@@ -31,15 +31,23 @@ function HomePage() {
       stale_in: "30d",
       fetch_resources: ["ACCOUNTS", "OWNERS", "TRANSACTIONS"],
     };
+    try {
+      const create = await createLink(objLink);
 
-    const create = await createLink(objLink);
-
-    const result = {
-      id: create.data.id,
-      display_name,
-    };
-    updateState(result);
-    router.push(`/transactions`);
+      const result = {
+        id: create.data.id,
+        display_name,
+      };
+      updateState(result);
+      router.push(`/transactions`);
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.response.data.resp,
+        icon: "error",
+        confirmButtonText: "Cerrar",
+      });
+    }
   };
 
   useEffect(() => {
