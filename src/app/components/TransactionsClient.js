@@ -44,7 +44,7 @@ function TransactionsClient({ listTransactions }) {
 
     console.debug({ count });
 
-    if (count === 6) {
+    if (count === 5) {
       Swal.fire({
         title: "Advertencia",
         text: "La respuesta de la petición está tardando demasiado o está vacía",
