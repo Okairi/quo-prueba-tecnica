@@ -3,9 +3,10 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { createLink, getBanks } from "./services/bankService";
 import { useRouter } from "next/navigation";
-
 import Image from "next/image";
 import { SpinerLoading } from "./components/SpinerLoading";
+
+import { useMyContext } from "../app/context/BankContext";
 
 const getBaknsList = async () => {
   const data = await getBanks();
@@ -16,6 +17,7 @@ function HomePage() {
   const [data, setdata] = useState([]);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const { myState, updateState } = useMyContext();
 
   const redirectDetailsCreateLink = async (name, display_name) => {
     setIsLoading(true);
@@ -36,8 +38,8 @@ function HomePage() {
       id: create.data.id,
       display_name,
     };
-
-    router.push(`/transactions?id=${create.data.id}&name=${display_name}`);
+    updateState(result);
+    router.push(`/transactions`);
   };
 
   useEffect(() => {

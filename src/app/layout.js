@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "./components/NavBar";
+import { MyContextProvider } from "./context/BankContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className="bg-[while]">
       <body className={inter.className}>
         <NavBar></NavBar>
-
-        {children}
+        <MyContextProvider>{children}</MyContextProvider>
       </body>
     </html>
   );

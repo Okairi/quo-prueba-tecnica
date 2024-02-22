@@ -1,23 +1,23 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { transactionList } from "../services/bankService";
 import { useEffect, useLayoutEffect, useState } from "react";
 import "./transactions.css";
 import { SpinerLoading } from "../components/SpinerLoading";
+import { useMyContext } from "../context/BankContext";
 
 function TransactionsPage() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
   const router = useRouter();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(0);
+  const { myState, updateState } = useMyContext();
 
+  console.log(myState);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const transactionListRespuesta = await transactionList(id);
+        const transactionListRespuesta = await transactionList(myState.id);
         setData(transactionListRespuesta.data.results);
 
         let totalInflows = 0;
@@ -55,7 +55,9 @@ function TransactionsPage() {
         <SpinerLoading />
       ) : (
         <>
-          <h2 className="text-[orange] font-bold text-[32px] ml-12">{name}</h2>
+          <h2 className="text-[orange] font-bold text-[32px] ml-12">
+            {myState.display_name}
+          </h2>
           <span className="ml-12">KPI : {balance}</span>
           <br />
           <br />
