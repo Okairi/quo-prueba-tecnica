@@ -4,12 +4,14 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 const MyContext = createContext();
 
 export function MyContextProvider({ children }) {
-  const initialState = JSON.parse(sessionStorage.getItem("myState")) || {};
+  let initialState = {};
 
   const [myState, setMyState] = useState(initialState);
 
   useEffect(() => {
-    sessionStorage.setItem("myState", JSON.stringify(myState));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("myState", JSON.stringify(myState));
+    }
   }, [myState]);
 
   const updateState = (newValue) => {
