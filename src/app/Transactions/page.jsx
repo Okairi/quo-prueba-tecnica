@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import "./transactions.css";
 import { SpinerLoading } from "../components/SpinerLoading";
 import { useMyContext } from "../context/BankContext";
+import Swal from "sweetalert2";
 
 function TransactionsPage() {
   const router = useRouter();
@@ -35,6 +36,13 @@ function TransactionsPage() {
         setBalance(balanceResult);
       } catch (error) {
         console.error("Error al obtener transacciones:", error);
+
+        Swal.fire({
+          title: "Error!",
+          text: error.response.data.resp,
+          icon: "error",
+          confirmButtonText: "Cerrar",
+        });
       } finally {
         setLoading(false);
       }
