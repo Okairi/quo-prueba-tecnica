@@ -20,7 +20,7 @@ function TransactionsPage() {
 
     const fetchData = async () => {
       try {
-        setLoading(true); // Establecer loading en true antes de realizar la solicitud
+        setLoading(true);
         const transactionListRespuesta = await transactionList(myState.id);
 
         if (
@@ -62,10 +62,8 @@ function TransactionsPage() {
       }
     };
 
-    // Iniciar la solicitud de datos
     fetchData();
 
-    // Iniciar el temporizador solo si la solicitud está pendiente
     timer = setTimeout(() => {
       if (loading) {
         Swal.fire({
@@ -77,7 +75,6 @@ function TransactionsPage() {
       }
     }, 4000);
 
-    // Limpiar el temporizador cuando el componente se desmonta o se vuelve a llamar useEffect
     return () => clearTimeout(timer);
   }, []);
 
