@@ -14,7 +14,6 @@ function TransactionsClient({ listTransactions }) {
   const [balance, setBalance] = useState(0);
   const { myState, updateState } = useMyContext();
 
-  console.debug({ count });
   const getData = useCallback(() => {
     let totalInflows = 0;
     let totalOutflows = 0;
@@ -52,6 +51,7 @@ function TransactionsClient({ listTransactions }) {
         router.push("/");
       });
     }
+    getData();
   }, [router, listTransactions]);
 
   useLayoutEffect(() => {
