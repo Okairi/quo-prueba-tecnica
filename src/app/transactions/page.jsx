@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { transactionList } from "../services/bankService";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -14,32 +15,45 @@ function TransactionsPage() {
   const [balance, setBalance] = useState(0);
   const { myState, updateState } = useMyContext();
 
-  console.log(myState);
   useEffect(() => {
+    let timer;
+
     const fetchData = async () => {
       try {
+        setLoading(true); // Establecer loading en true antes de realizar la solicitud
         const transactionListRespuesta = await transactionList(myState.id);
-        setData(transactionListRespuesta.data.results);
 
-        let totalInflows = 0;
-        let totalOutflows = 0;
+        if (
+          transactionListRespuesta &&
+          transactionListRespuesta.data &&
+          transactionListRespuesta.data.results &&
+          transactionListRespuesta.data.results.length > 0
+        ) {
+          setData(transactionListRespuesta.data.results);
 
-        transactionListRespuesta.data.results.forEach((transaction) => {
-          if (transaction.type === "INFLOW") {
-            totalInflows += transaction.amount;
-          } else if (transaction.type === "OUTFLOW") {
-            totalOutflows += transaction.amount;
-          }
-        });
+          let totalInflows = 0;
+          let totalOutflows = 0;
 
-        const balanceResult = totalInflows - totalOutflows;
-        setBalance(balanceResult);
+          transactionListRespuesta.data.results.forEach((transaction) => {
+            if (transaction.type === "INFLOW") {
+              totalInflows += transaction.amount;
+            } else if (transaction.type === "OUTFLOW") {
+              totalOutflows += transaction.amount;
+            }
+          });
+
+          const balanceResult = totalInflows - totalOutflows;
+          setBalance(balanceResult);
+        } else {
+          throw new Error("La respuesta de transactionList está vacía");
+        }
       } catch (error) {
         console.error("Error al obtener transacciones:", error);
-
         Swal.fire({
           title: "Error!",
-          text: error.response.data.resp,
+          text: error.response
+            ? error.response.data.resp
+            : "Ha ocurrido un error al obtener las transacciones",
           icon: "error",
           confirmButtonText: "Cerrar",
         });
@@ -48,7 +62,23 @@ function TransactionsPage() {
       }
     };
 
+    // Iniciar la solicitud de datos
     fetchData();
+
+    // Iniciar el temporizador solo si la solicitud está pendiente
+    timer = setTimeout(() => {
+      if (loading) {
+        Swal.fire({
+          title: "Advertencia",
+          text: "La respuesta de la petición está tardando demasiado o está vacía",
+          icon: "warning",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    }, 4000);
+
+    // Limpiar el temporizador cuando el componente se desmonta o se vuelve a llamar useEffect
+    return () => clearTimeout(timer);
   }, []);
 
   useLayoutEffect(() => {
