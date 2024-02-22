@@ -16,7 +16,7 @@ export const transactionList = (id) => {
 export const login = (user) => {
   return axios.post(`${process.env.NEXT_PUBLIC_DEV_AUTH}/login`, user);
 };
-
+/* clg */
 export const register = (user) => {
   return axios.post(`${process.env.NEXT_PUBLIC_DEV_AUTH}/register`, user);
 };
