@@ -6,7 +6,6 @@ export const NavBar = () => {
   const router = useRouter();
 
   const closeSesion = () => {
-    console.log("Close");
     sessionStorage.removeItem("idToken");
     router.push("/login");
   };

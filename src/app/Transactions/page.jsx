@@ -49,8 +49,6 @@ function TransactionsPage() {
     }
   }, []);
 
-  console.log(data);
-
   return (
     <section>
       {loading && <SpinerLoading />}

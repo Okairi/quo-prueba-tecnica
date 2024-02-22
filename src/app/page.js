@@ -9,7 +9,6 @@ import { SpinerLoading } from "./components/SpinerLoading";
 
 const getBaknsList = async () => {
   const data = await getBanks();
-  console.log(data.data.results);
   return data.data.results;
 };
 
@@ -32,7 +31,6 @@ function HomePage() {
     };
 
     const create = await createLink(objLink);
-    console.log(create);
 
     const result = {
       id: create.data.id,

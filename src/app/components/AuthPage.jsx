@@ -22,9 +22,7 @@ function AuthPage({ isLogin }) {
         const respRegister = await register(formData);
         router.push("/login");
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (
