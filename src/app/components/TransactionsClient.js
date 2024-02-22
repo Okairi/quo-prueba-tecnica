@@ -38,13 +38,13 @@ function TransactionsClient({ listTransactions }) {
   useEffect(() => {
     count++;
 
-    if (listTransactions.length === 0 && count < 6) {
+    if (listTransactions.length === 0 && count < 7) {
       router.refresh();
     }
 
     console.debug({ count });
 
-    if (count === 5) {
+    if (count === 7) {
       Swal.fire({
         title: "Advertencia",
         text: "La respuesta de la petición está tardando demasiado o está vacía",
