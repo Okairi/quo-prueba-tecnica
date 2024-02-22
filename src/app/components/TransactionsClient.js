@@ -1,7 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import Swal from "sweetalert2";
 import { useMyContext } from "../context/BankContext";
 import { SpinerLoading } from "./SpinerLoading";
@@ -11,10 +17,9 @@ let count = 0;
 function TransactionsClient({ listTransactions }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [balance, setBalance] = useState(0);
   const { myState, updateState } = useMyContext();
 
-  const getData = useCallback(() => {
+  const balance = useMemo(() => {
     let totalInflows = 0;
     let totalOutflows = 0;
     listTransactions.forEach((transaction) => {
@@ -25,14 +30,12 @@ function TransactionsClient({ listTransactions }) {
       }
     });
 
-    const balanceResult = totalInflows - totalOutflows;
-    setBalance(balanceResult);
-  }, [router]);
+    return totalInflows - totalOutflows;
+  }, [listTransactions]);
 
   console.debug({ listTransactions });
 
   useEffect(() => {
-    getData();
     count++;
 
     if (listTransactions.length === 0 && count < 6) {
@@ -51,7 +54,6 @@ function TransactionsClient({ listTransactions }) {
         router.push("/");
       });
     }
-    getData();
   }, [router, listTransactions]);
 
   useLayoutEffect(() => {
