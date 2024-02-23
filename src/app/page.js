@@ -50,6 +50,43 @@ function HomePage() {
     }
   };
 
+  const redirectAccountsBank = async (name, display_name) => {
+    setIsLoading(true);
+    const objLink = {
+      institution: name,
+      username: myState?.username ?? "alessandro",
+      password: "full",
+      external_id: "security-testing",
+      access_mode: "single",
+      credentials_storage: "5d",
+      stale_in: "30d",
+      fetch_resources: ["ACCOUNTS", "OWNERS", "TRANSACTIONS"],
+    };
+    try {
+      const create = await createLink(objLink);
+
+      if (create) {
+        const result = {
+          id: create.data.id,
+          display_name,
+        };
+        updateState(result);
+        router.push(`/accounts/${result?.id}`);
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error,
+        icon: "error",
+        confirmButtonText: "Cerrar",
+      }).then((result) => {
+        location.reload();
+      });
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const banksList = await getBaknsList();
@@ -80,7 +117,7 @@ function HomePage() {
               <article
                 className="bank mb-[20px]"
                 onClick={() => {
-                  redirectDetailsCreateLink(val.name, val.display_name);
+                  redirectAccountsBank(val.name, val.display_name);
                 }}
               >
                 <span className="text-[12px] sm:text-[20px]">
