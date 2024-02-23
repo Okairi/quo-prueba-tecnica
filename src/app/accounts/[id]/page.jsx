@@ -1,7 +1,7 @@
 "use client";
 
 import { accountsList } from "@/app/services/bankService";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "@/app/context/BankContext";
@@ -59,6 +59,12 @@ function AccountsPage({ params }) {
 
     fetchAccounts();
   }, [params.id, retryCount]);
+
+  useLayoutEffect(() => {
+    if (!sessionStorage.getItem("idToken")) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <div className="container mx-auto">
