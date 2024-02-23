@@ -68,13 +68,17 @@ function TransactionsClient({ listTransactions }) {
         <SpinerLoading />
       ) : (
         <>
-          <h2 className="text-[orange] font-bold text-[32px] ml-12">
+          <h2 className="text-[orange] font-bold text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl mb-8">
             {myState.display_name}
           </h2>
-          <span className="ml-12">KPI : {balance}</span>
+          <span
+            className={`ml-12 ${balance < 0 ? "text-red-500" : ""} font-bold`}
+          >
+            KPI : {balance}
+          </span>
           <br />
           <br />
-          <div className="tabla overflow-x-scroll max-w-[70%] ">
+          <div className="tabla overflow-x-scroll w-full sm:max-w-[70%] ">
             <div className="fila-header">
               <div className="celda">
                 <b>Monto</b>
