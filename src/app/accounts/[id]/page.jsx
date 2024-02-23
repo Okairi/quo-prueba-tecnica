@@ -58,11 +58,11 @@ function AccountsPage({ params }) {
     };
 
     fetchAccounts();
-  }, [params.id, retryCount]); // Dependencias: params.id y retryCount
+  }, [params.id, retryCount]);
 
   return (
     <div className="container mx-auto">
-      {loading ? ( // Mostrar el spinner de carga si loading es verdadero
+      {loading ? (
         <SpinerLoading />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

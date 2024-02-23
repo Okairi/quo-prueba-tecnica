@@ -104,39 +104,34 @@ function HomePage() {
   }, []);
 
   return (
-    <section>
+    <section className="container mx-auto">
       {isLoading ? (
         <SpinerLoading></SpinerLoading>
       ) : (
-        data.map((val) => {
-          return (
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 container-list-bank">
+          {data.map((val) => (
             <article
-              className="container-home text-white mb-4 w-[20px]"
+              className="bank-card cursor-pointer bg-[white] p-4 rounded-md card-bank-list"
               key={val.id}
+              onClick={() => {
+                redirectAccountsBank(val.name, val.display_name);
+              }}
             >
-              <article
-                className="bank mb-[20px]"
-                onClick={() => {
-                  redirectAccountsBank(val.name, val.display_name);
-                }}
-              >
-                <span className="text-[12px] sm:text-[20px]">
-                  {" "}
-                  {val.display_name}
-                </span>
-                {val.logo && (
+              <span className="text-lg font-bold">{val.display_name}</span>
+              {val.logo && (
+                <div className="mt-2 max-w-[200px] mx-auto">
                   <Image
-                    className="logo"
                     src={val.logo}
                     width={200}
                     height={92}
                     alt=""
+                    className="object-contain"
                   />
-                )}
-              </article>
+                </div>
+              )}
             </article>
-          );
-        })
+          ))}
+        </div>
       )}
     </section>
   );
