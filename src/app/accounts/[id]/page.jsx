@@ -71,10 +71,10 @@ function AccountsPage({ params }) {
       {loading ? (
         <SpinerLoading />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-10 ">
           {accounts.map((account) => (
             <div
-              className="cursor-pointer"
+              className="cursor-pointer "
               key={account.id}
               onClick={() => {
                 redirectTransactions(account.link, account.institution.name);
