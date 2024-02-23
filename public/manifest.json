@@ -4,7 +4,7 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "app-next",
+    "name": "App Banco",
     "short_name": "App Banco",
     "description": "Aplicación QUO Next",
     "icons": [
