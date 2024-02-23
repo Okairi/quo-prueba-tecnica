@@ -5,8 +5,8 @@
     "scope": "/",
     "start_url": "/",
     "name": "app-next",
-    "short_name": "next",
-    "description": "NextJs QUO",
+    "short_name": "App Banco",
+    "description": "Aplicación QUO Next",
     "icons": [
         {
             "src": "/icon-192x192.png",
