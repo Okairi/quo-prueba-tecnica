@@ -11,9 +11,10 @@ function AccountsPage({ params }) {
   const [accounts, setAccounts] = useState([]);
   const router = useRouter();
   const { myState, updateState } = useMyContext();
-
   const [loading, setLoading] = useState(true);
-  SpinerLoading;
+
+  const [retryCount, setRetryCount] = useState(0);
+
   const redirectTransactions = (id, name) => {
     setLoading(true);
     updateState({
@@ -27,9 +28,24 @@ function AccountsPage({ params }) {
     const fetchAccounts = async () => {
       try {
         const accountData = await accountsList(params.id);
-        console.log(accountData.data.results);
-        setAccounts(accountData.data.results);
+        const receivedAccounts = accountData.data.results;
+        setAccounts(receivedAccounts);
         setLoading(false);
+
+        if (receivedAccounts.length === 0 && retryCount < 7) {
+          setRetryCount(retryCount + 1);
+          router.refresh();
+          setLoading(true);
+        } else if (receivedAccounts.length === 0 && retryCount === 7) {
+          Swal.fire({
+            title: "Advertencia",
+            text: "La respuesta de la petición está tardando demasiado o está vacía",
+            icon: "warning",
+            confirmButtonText: "Cerrar",
+          }).then((result) => {
+            router.push("/");
+          });
+        }
       } catch (error) {
         setLoading(false);
         Swal.fire({
@@ -40,8 +56,9 @@ function AccountsPage({ params }) {
         console.error(error);
       }
     };
+
     fetchAccounts();
-  }, [params.id]);
+  }, [params.id, retryCount]); // Dependencias: params.id y retryCount
 
   return (
     <div className="container mx-auto">
